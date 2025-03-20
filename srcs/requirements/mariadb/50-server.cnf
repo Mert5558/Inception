@@ -14,7 +14,7 @@ init_file = /etc/mysql/init.sql
 # * Basic Settings
 #
 
-#user                    = root
+user                    = root
 pid-file                = /run/mysqld/mysqld.pid
 basedir                 = /usr
 datadir                 = /var/lib/mysql

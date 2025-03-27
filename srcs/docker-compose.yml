@@ -7,30 +7,54 @@ services:
     depends_on:
       - wordpress
       - mariadb
+    restart: always
     ports:
+      - "443:443"
       - "80:80"
     volumes:
       - ./web:/var/www/html
     networks:
       inception:
+    env_file:
+      - .env
 
   wordpress:
     build: requirements/wordpress/.
     container_name: wp-php
     depends_on:
       - mariadb
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: ${MYSQL_HOST}
+      WORDPRESS_DB_USER: ${MYSQL_USER}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
     volumes:
       - ./web:/var/www/html
     networks:
       inception:
+    env_file:
+      - .env
 
   mariadb:
     build: requirements/mariadb/.
     container_name: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - ./database:/var/lib/mysql
     networks:
       inception:
+    env_file:
+      - .env
 
 networks:
   inception:
+
+volumes:
+  wordpress:
+  database:

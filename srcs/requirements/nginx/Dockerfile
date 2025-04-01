@@ -11,8 +11,9 @@ RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 	-out /etc/nginx/ssl/nginx.crt \
 	-subj "/C=DE/ST=Baden-Wuerttemberg/L=Heilbronn/O=42HN/CN=${DOMAIN_NAME}"
 
-#COPY default /etc/nginx/sites-available/.
-COPY conf/nginx.conf /etc/nginx/nginx.conf
+COPY ./conf/default /etc/nginx/sites-available/.
+
+RUN mkdir -p /run/nginx
 
 EXPOSE 443
 

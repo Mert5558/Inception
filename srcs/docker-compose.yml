@@ -7,7 +7,7 @@ services:
     depends_on:
       - wordpress
       - mariadb
-    restart: always
+    restart: on-failure
     ports:
       - "443:443"
       - "80:80"
@@ -23,7 +23,7 @@ services:
     container_name: wp-php
     depends_on:
       - mariadb
-    restart: always
+    restart: on-failure
     environment:
       WORDPRESS_DB_HOST: ${MYSQL_HOST}
       WORDPRESS_DB_USER: ${MYSQL_USER}
@@ -39,7 +39,7 @@ services:
   mariadb:
     build: requirements/mariadb/.
     container_name: mariadb
-    restart: always
+    restart: on-failure
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}

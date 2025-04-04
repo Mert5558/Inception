@@ -47,16 +47,16 @@ else
 		mv wp-cli.phar /usr/local/bin/wp
 	fi
 
-	./wp-cli.phar core download --allow-root
+	wp core download --allow-root
 
-	./wp-cli.phar config create \
+	wp config create \
 		--dbname="$DB_NAME" \
 		--dbuser="$DB_USER" \
 		--dbpass="$DB_PASS" \
 		--dbhost="$DB_HOST" \
 		--allow-root
 	
-	./wp-cli.phar core install \
+	wp core install \
 		--url="$WP_URL" \
 		--title="$WP_TITLE" \
 		--admin_user="$ADMIN_USER" \
@@ -64,9 +64,9 @@ else
 		--admin_email="$ADMIN_EMAIL" \
 		--allow-root
 	
-	if ! ./wp-cli.phar user get "$WP_USER" --allow-root > /dev/null 2>&1
+	if ! wp user get "$WP_USER" --allow-root > /dev/null 2>&1
 	then
-		./wp-cli.phar user create "$WP_USER" "$WP_USER_EMAIL" \
+		wp user create "$WP_USER" "$WP_USER_EMAIL" \
 			--role=author --user_pass="$WP_USER_PASS" --allow-root
 	fi
 

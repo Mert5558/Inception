@@ -28,12 +28,12 @@ WP_USER="${WP_USER}"
 WP_USER_PASS="${WP_USER_PASSWORD}"
 WP_USER_EMAIL="${WP_USER_EMAIL}"
 
+cd /var/www/html
+
 if [ -f ./wp-config.php ]
 then
 	echo "Wordpress already installed"
 else
-	cd /var/www/html
-
 	echo "Waiting for MariaDB to be ready..."
 	until mysqladmin ping -h"$DB_HOST" --silent; do
 		sleep 2
@@ -47,7 +47,10 @@ else
 		mv wp-cli.phar /usr/local/bin/wp
 	fi
 
-	wp core download --allow-root
+	if [ ! -f ./index.php ]
+	then
+		wp core download --allow-root
+	fi
 
 	wp config create \
 		--dbname="$DB_NAME" \

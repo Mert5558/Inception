@@ -34,8 +34,6 @@ services:
       - .env:/var/www/html/.env
     networks:
       inception:
-    env_file:
-      - .env
 
   mariadb:
     build: requirements/mariadb/.
@@ -48,6 +46,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - ./database:/var/lib/mysql
+      - ./requirements/mariadb/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     networks:
       inception:
     env_file:

@@ -35,7 +35,7 @@ then
 	echo "Wordpress already installed"
 else
 	echo "Waiting for MariaDB to be ready..."
-	until mysqladmin ping -h"$DB_HOST" --silent; do
+	until mysql -h "$DB_HOST" -u"$DB_USER" -p"$DB_PASS" -e "SELECT 1;" > /dev/null 2>&1; do
 		sleep 2
 	done
 	echo "Database is ready!"

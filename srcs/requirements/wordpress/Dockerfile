@@ -19,13 +19,13 @@ RUN apt update && apt upgrade -y && apt install -y \
 
 WORKDIR /var/www/html
 
-COPY www.conf /etc/php/8.2/fpm/pool.d/.
+COPY conf/www.conf /etc/php/8.2/fpm/pool.d/.
 
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
 	&& chmod +x wp-cli.phar \
 	&& mv wp-cli.phar /usr/local/bin/wp
 
-COPY script.sh /script.sh
+COPY tools/script.sh /script.sh
 RUN chmod +x /script.sh
 
 EXPOSE 9000

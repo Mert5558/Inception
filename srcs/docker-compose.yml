@@ -10,9 +10,8 @@ services:
     restart: on-failure
     ports:
       - "443:443"
-      - "80:80"
     volumes:
-      - ./web:/var/www/html
+      - wordpress:/var/www/html
     networks:
       inception:
     env_file:
@@ -30,7 +29,7 @@ services:
       WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
       WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
     volumes:
-      - ./web:/var/www/html
+      - wordpress:/var/www/html
       - .env:/var/www/html/.env
     networks:
       inception:
@@ -45,7 +44,7 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
-      - ./database:/var/lib/mysql
+      - mariadb:/var/lib/mysql
       - ./requirements/mariadb/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     networks:
       inception:
@@ -57,4 +56,4 @@ networks:
 
 volumes:
   wordpress:
-  database:
+  mariadb:

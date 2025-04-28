@@ -1,0 +1,59 @@
+version: "3.8"
+
+services:
+  nginx:
+    build: requirements/nginx/.
+    container_name: nginx
+    depends_on:
+      - wordpress
+      - mariadb
+    restart: on-failure
+    ports:
+      - "443:443"
+    volumes:
+      - wordpress:/var/www/html
+    networks:
+      inception:
+    env_file:
+      - .env
+
+  wordpress:
+    build: requirements/wordpress/.
+    container_name: wp-php
+    depends_on:
+      - mariadb
+    restart: on-failure
+    environment:
+      WORDPRESS_DB_HOST: ${MYSQL_HOST}
+      WORDPRESS_DB_USER: ${MYSQL_USER}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+    volumes:
+      - wordpress:/var/www/html
+      - .env:/var/www/html/.env
+    networks:
+      inception:
+
+  mariadb:
+    build: requirements/mariadb/.
+    container_name: mariadb
+    restart: on-failure
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mariadb:/var/lib/mysql
+      - ./requirements/mariadb/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      inception:
+    env_file:
+      - .env
+
+networks:
+  inception:
+
+volumes:
+  wordpress:
+  mariadb:

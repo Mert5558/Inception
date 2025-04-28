@@ -30,5 +30,4 @@ RUN chmod +x /script.sh
 
 EXPOSE 9000
 
-CMD ["bash", "/script.sh"] 
-#remove bash -----------------------\\\\\\\
+CMD ["/script.sh"]

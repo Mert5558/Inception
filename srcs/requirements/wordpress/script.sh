@@ -52,6 +52,8 @@ else
 		wp core download --allow-root
 	fi
 
+	rm -f /var/www/html/index.nginx-debian.html
+
 	wp config create \
 		--dbname="$DB_NAME" \
 		--dbuser="$DB_USER" \

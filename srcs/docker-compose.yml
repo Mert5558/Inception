@@ -45,7 +45,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - mariadb:/var/lib/mysql
-      - ./requirements/mariadb/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - ./requirements/mariadb/tools/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     networks:
       inception:
     env_file:
@@ -56,4 +56,15 @@ networks:
 
 volumes:
   wordpress:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/merdal/data/wordpress
+      o: bind
+
   mariadb:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/merdal/data/mariadb
+      o: bind

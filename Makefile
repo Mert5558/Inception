@@ -26,6 +26,7 @@ clean:
 prune:
 	@echo "removing unused docker objects..."
 	@docker system prune -a
+	@docker volume prune -a
 
 fclean: clean prune
 	@echo "removing images..."

@@ -26,11 +26,10 @@ clean:
 prune:
 	@echo "removing unused docker objects..."
 	@docker system prune -a
-	@docker volume prune
+	@docker volume prune -a
 
 fclean: clean prune
 	@echo "removing images..."
-	@docker volume rm srcs_mariadb srcs_wordpress || true
 	@docker rmi $$(docker images -q) --force || true
 
 re: fclean up

@@ -11,7 +11,7 @@ RUN apt update && apt upgrade -y && apt install -y \
 	php-soap \
 	php-intl \
 	php-zip \
-	mariadb-client \
+	#mariadb-client \
 	curl \
 	wget \
 	unzip \
@@ -19,7 +19,7 @@ RUN apt update && apt upgrade -y && apt install -y \
 
 WORKDIR /var/www/html
 
-COPY conf/www.conf /etc/php/8.2/fpm/pool.d/.
+COPY conf/www.conf /etc/php/7.4/fpm/pool.d/.
 
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
 	&& chmod +x wp-cli.phar \
@@ -27,6 +27,8 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
 
 COPY tools/script.sh /script.sh
 RUN chmod +x /script.sh
+
+RUN mkdir -p /run/php
 
 EXPOSE 9000
 

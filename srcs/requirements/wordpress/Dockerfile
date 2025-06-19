@@ -11,7 +11,7 @@ RUN apt update && apt upgrade -y && apt install -y \
 	php-soap \
 	php-intl \
 	php-zip \
-	#mariadb-client \
+	mariadb-client \
 	curl \
 	wget \
 	unzip \

@@ -44,7 +44,6 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - mariadb:/var/lib/mysql
-      - ./requirements/mariadb/tools/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     networks:
       inception:
     env_file:

@@ -6,7 +6,6 @@ RUN apt update && apt upgrade -y && apt install -y \
 	chown -R mysql:mysql /run/mysqld
 
 COPY conf/50-server.cnf /etc/mysql/mariadb.conf.d/.
-COPY tools/init.sql /etc/mysql/init.sql
 COPY tools/script.sh .
 
 RUN chmod +x script.sh

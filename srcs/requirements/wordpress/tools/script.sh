@@ -2,16 +2,6 @@
 
 set -e
 
-if [ -f "/var/www/html/.env" ]
-then
-	set -a
-	source /var/www/html/.env
-	set +a
-else
-	echo ".env file not found! Exiting..."
-	exit 1
-fi
-
 DB_NAME="${MYSQL_DATABASE}"
 DB_USER="${MYSQL_USER}"
 DB_PASS="${MYSQL_PASSWORD}"
@@ -29,12 +19,12 @@ WP_USER_PASS="${WP_USER_PASSWORD}"
 WP_USER_EMAIL="${WP_USER_EMAIL}"
 
 cd /var/www/html
-
+echo "11111111"
 if [ -f ./wp-config.php ]
 then
 	echo "Wordpress already installed"
 else
-	echo "Waiting for MariaDB to be ready..."
+	echo "Waiting for MariaDB to be ready... (wp script.sh)"
 	until mysql -h "$DB_HOST" -u"$DB_USER" -p"$DB_PASS" -e "SELECT 1;" > /dev/null 2>&1; do
 		sleep 2
 	done
@@ -69,6 +59,7 @@ else
 		--admin_email="$ADMIN_EMAIL" \
 		--allow-root
 	
+	echo "hello im here"
 	if ! wp user get "$WP_USER" --allow-root > /dev/null 2>&1
 	then
 		wp user create "$WP_USER" "$WP_USER_EMAIL" \

@@ -1,27 +1,31 @@
 #!/bin/bash
 
-# Start MariaDB in background
-mysqld &
+mysqld_safe --datadir=/var/lib/mysql &
 
-# Wait until MariaDB is accepting connections
-until mysqladmin ping -u root -p"${MYSQL_ROOT_PASSWORD}" --silent; do
+# Wait for MariaDB to be ready
+until mysqladmin ping -u root --silent; do
+	echo "⏳ Waiting for MariaDB to be ready..."
 	sleep 1
 done
 
-echo "MariaDB is ready."
+echo "✅ MariaDB is ready, initializing..."
 
-# Try to create user + DB
-echo "Creating database and user..."
+if [ ! -d "/var/lib/mysql/${MYSQL_DATABASE}" ]; then
+	mysql -u root <<-EOSQL
+		-- Create remote root access
+		CREATE USER IF NOT EXISTS 'root'@'%' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
+		GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
 
-mysql -u root -p"${MYSQL_ROOT_PASSWORD}" <<-EOSQL
-CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;
-DROP USER IF EXISTS '${MYSQL_USER}'@'%';
-CREATE USER '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';
-GRANT ALL PRIVILEGES ON \`${MYSQL_DATABASE}\`.* TO '${MYSQL_USER}'@'%';
-FLUSH PRIVILEGES;
+		-- Create WordPress database and user
+		CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;
+		CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';
+		GRANT ALL PRIVILEGES ON \`${MYSQL_DATABASE}\`.* TO '${MYSQL_USER}'@'%';
+
+		FLUSH PRIVILEGES;
 EOSQL
+	echo "✅ MariaDB setup completed."
+else
+	echo "✅ MariaDB already initialized."
+fi
 
-echo "✅ User and DB created successfully."
-
-# Keep MariaDB in foreground ----
 wait

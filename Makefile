@@ -33,13 +33,6 @@ fclean: clean prune
 	@docker volume rm srcs_mariadb srcs_wordpress || true
 	@docker rmi $$(docker images -q) --force || true
 
-local:
-	@echo "Resetting local data directories..."
-	@rm -rf /home/merdal/data/wordpress
-	@rm -rf /home/merdal/data/mariadb
-	@mkdir -p /home/merdal/data/wordpress
-	@mkdir -p /home/merdal/data/mariadb	
-
 re: fclean up
 
 .PHONY: all up down restart logs ps clean fclean re prune

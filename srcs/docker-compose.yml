@@ -12,7 +12,7 @@ services:
     volumes:
       - wordpress:/var/www/html
     networks:
-      - inception
+      inception:
     env_file:
       - .env
 
@@ -29,10 +29,9 @@ services:
       WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
     volumes:
       - wordpress:/var/www/html
+      - .env:/var/www/html/.env
     networks:
-      - inception
-    env_file:
-      - .env
+      inception:
 
   mariadb:
     build: requirements/mariadb/.
@@ -45,14 +44,14 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - mariadb:/var/lib/mysql
+      - ./requirements/mariadb/tools/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     networks:
-      - inception
+      inception:
     env_file:
       - .env
 
 networks:
   inception:
-    driver: bridge
 
 volumes:
   wordpress:
